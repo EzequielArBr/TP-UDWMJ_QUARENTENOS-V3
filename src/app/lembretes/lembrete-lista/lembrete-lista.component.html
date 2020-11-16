@@ -1,0 +1,17 @@
+<mat-accordion *ngIf="lembretes.length > 0">
+  <mat-expansion-panel *ngFor="let lembrete of lembretes">
+    <mat-expansion-panel-header>TituloLembrete: {{ lembrete.titulo }}</mat-expansion-panel-header>
+    <p>DataCadastro: {{ lembrete.dataCadastro }}</p>
+    <hr />
+    <p>DataPrevista: {{ lembrete.dataPrevista }}</p>
+    <hr />
+    <p>Atividade: {{ lembrete.atividade }}</p>
+    <mat-action-row>
+      <button mat-button color="primary">EDITAR</button>
+      <button mat-button color="warn">REMOVER</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<p class="mat-body-1" style="text-align: center;" *ngIf="lembretes.length <= 0">
+  Nenhum lembrete cadastrado
+</p>
