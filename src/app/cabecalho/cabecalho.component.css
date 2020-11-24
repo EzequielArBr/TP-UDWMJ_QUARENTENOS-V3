@@ -1,0 +1,14 @@
+ul {
+    list-style: nome;
+    padding:0;
+    margin:0;
+}
+
+a {
+    text-decoration: nome;
+    color:white;
+}
+
+.separador {
+    flex: 1;
+}

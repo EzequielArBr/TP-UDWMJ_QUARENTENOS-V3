@@ -9,6 +9,7 @@
         ngModel
         required
         minlength="3"
+        [ngModel]="lembrete?.titulo"
         #titulo="ngModel"
       />
       <mat-error *ngIf="titulo.invalid">Digite o titulo do lembrete válido</mat-error>
@@ -22,6 +23,7 @@
         name="dataCadastro"
         ngModel
         required
+        [ngModel]="lembrete?.dataCadastro"
         #dataCadastro="ngModel"
       />
       <mat-error *ngIf="dataCadastro.invalid">Digite uma data de cadastro válida</mat-error>
@@ -35,6 +37,7 @@
         name="dataPrevista"
         ngModel
         required
+        [ngModel]="lembrete?.dataPrevista"
         #dataPrevista="ngModel"
       />
       <mat-error *ngIf="dataPrevista.invalid">Digite uma data prevista válida<</mat-error>
@@ -48,12 +51,13 @@
         name="atividade"
         ngModel
         required
+        [ngModel]="lembrete?.atividade"
         #atividade="ngModel"
       />
       <mat-error *ngIf="atividade.invalid">Digite uma atividade válida</mat-error>
     </mat-form-field>
 
-    <button color="primary" mat-raised-button>
+    <button color="accent" mat-raised-button>
       Inserir Lembrete
     </button>
   </form>

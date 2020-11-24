@@ -5,25 +5,36 @@ import { Lembrete } from './lembrete.model';
 
 import { Subject } from 'rxjs';
 
+import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
 export class LembreteService {
 
-  constructor(private httpLembrete : HttpClient) {
+  constructor(private HttpLembrete : HttpClient) {
 
   }
 
   private lembretes: Lembrete [] = [];
 
   getLembretes(): void {
-    this.httpLembrete.get<{mensagem : string, lembretes: Lembrete[]}>(
-      'http://localhost:3000/api/lembretes'
-    ).subscribe((dados) => {
-      this.lembretes = dados.lembretes
+    this.HttpLembrete.get<{mensagem : string, lembretes:any}>('http://localhost:3000/api/lembretes')
+      .pipe(map((dados) => {
+        return dados.lembretes.map(lembrete => {
+          return {
+          id: lembrete._id,
+          titulo: lembrete.titulo,
+          dataCadastro: lembrete.dataCadastro,
+          dataPrevista: lembrete.dataPrevista,
+          atividade: lembrete.atividade
+          }
+        })
+      }))
+      .subscribe((lembretes) => {
+      this.lembretes = lembretes;
       this.listaLembretesAtualizada.next([...this.lembretes])
     })
-    //return [...this.lembretes];
   }
 
   private listaLembretesAtualizada = new Subject <Lembrete[]>();
@@ -36,7 +47,7 @@ export class LembreteService {
       atividade:atividade
 
     };
-    this.httpLembrete.post<{mensagem: string}>(
+    this.HttpLembrete.post<{mensagem: string}>(
       'http://localhost:3000/api/lembretes',
       lembrete
     ).subscribe((dados) => {
@@ -50,6 +61,13 @@ export class LembreteService {
     return this.listaLembretesAtualizada.asObservable();
   }
 
+  getLembrete (idLembrete: string){
+    return {...this.lembretes.find((cli) => cli.id === idLembrete)};
+    }
 
-
+  removerLembrete (id: string): void{
+    this.HttpLembrete.delete(`http://localhost:3000/api/lembretes/${id}`).subscribe(() => {
+      console.log (`Lembrete de id: ${id} removido`);
+    });
+  }  
 }

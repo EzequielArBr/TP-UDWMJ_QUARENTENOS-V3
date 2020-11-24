@@ -46,15 +46,12 @@ app.use((req, res, next) => {
 //http://localhost:3000/api/lembretes
 app.get('/api/lembretes', (req, res, next) => {
     Lembrete.find().then(documents => {
+            console.log (documents)
             res.status(200).json({
                 mensagem: "Tudo ok",
                 lembretes: documents
             });
         })
-        /* res.status(200).json({
-             mensagem: "Tudo ok",
-             lembretes: lembretes
-         })*/
 })
 
 app.post('/api/lembretes', (req, res, next) => {
@@ -65,8 +62,19 @@ app.post('/api/lembretes', (req, res, next) => {
         atividade: req.body.atividade
     })
     lembrete.save();
-    console.log(lembrete);
-    res.status(201).json({ mensagem: "Lembrete inserido" })
+    then (lembreteInserido => {
+        res.status(201).json({
+        mensagem: 'Lembrete inserido',
+        id: lembreteInserido._id
+        })
+    })        
 })
+
+app.delete ('/api/lembretes/:id', (req, res, next) => {
+    Lembrete.deleteOne ({_id: req.params.id}).then((resultado) => {
+    console.log (req.params);
+    res.status(200).json({mensagem: "Lembrete removido"})
+    });
+  });
 
 module.exports = app

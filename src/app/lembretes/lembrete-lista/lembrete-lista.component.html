@@ -7,8 +7,8 @@
     <hr />
     <p>Atividade: {{ lembrete.atividade }}</p>
     <mat-action-row>
-      <button mat-button color="primary">EDITAR</button>
-      <button mat-button color="warn">REMOVER</button>
+      <button mat-button color="primary" [routerLink]="['/editar', lembrete.id]">EDITAR</button>
+      <button mat-button color="warn" (click)="onDelete(lembrete.id)" >REMOVER</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
