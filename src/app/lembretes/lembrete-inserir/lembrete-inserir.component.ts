@@ -3,7 +3,7 @@ import { OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Lembrete } from '../lembrete.model';
 import { LembreteService } from '../lembrete.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 
 @Component({

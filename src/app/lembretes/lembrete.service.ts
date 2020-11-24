@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-
 import { Lembrete } from './lembrete.model';
-
 import { Subject } from 'rxjs';
-
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -21,13 +18,13 @@ export class LembreteService {
   getLembretes(): void {
     this.HttpLembrete.get<{mensagem : string, lembretes:any}>('http://localhost:3000/api/lembretes')
       .pipe(map((dados) => {
-        return dados.lembretes.map(lembrete => {
+        return dados.lembretes.map(lem => {
           return {
-          id: lembrete._id,
-          titulo: lembrete.titulo,
-          dataCadastro: lembrete.dataCadastro,
-          dataPrevista: lembrete.dataPrevista,
-          atividade: lembrete.atividade
+          id: lem._id,
+          titulo: lem.titulo,
+          dataCadastro: lem.dataCadastro,
+          dataPrevista: lem.dataPrevista,
+          atividade: lem.atividade
           }
         })
       }))
@@ -40,18 +37,20 @@ export class LembreteService {
   private listaLembretesAtualizada = new Subject <Lembrete[]>();
 
   adicionarLembrete (titulo: string, dataCadastro: string, dataPrevista: string, atividade: string ): void{
-    const lembrete: Lembrete = {
+    const lembrete: Lembrete = {  
+      id: null,
       titulo: titulo,
       dataCadastro: dataCadastro,
       dataPrevista: dataPrevista,
       atividade:atividade
 
     };
-    this.HttpLembrete.post<{mensagem: string}>(
+    this.HttpLembrete.post<{mensagem: string, id: string}>(
       'http://localhost:3000/api/lembretes',
       lembrete
     ).subscribe((dados) => {
       console.log(dados.mensagem)
+      lembrete.id = dados.id;
       this.lembretes.push(lembrete);
       this.listaLembretesAtualizada.next([...this.lembretes]);
     })
@@ -62,12 +61,17 @@ export class LembreteService {
   }
 
   getLembrete (idLembrete: string){
-    return {...this.lembretes.find((cli) => cli.id === idLembrete)};
+    return {...this.lembretes.find((lem) => lem.id === idLembrete)};
     }
 
   removerLembrete (id: string): void{
-    this.HttpLembrete.delete(`http://localhost:3000/api/lembretes/${id}`).subscribe(() => {
+    this.HttpLembrete.delete(`http://localhost:3000/api/lembretes/${id}`)
+    .subscribe(() => {
       console.log (`Lembrete de id: ${id} removido`);
+      this.lembretes = this.lembretes.filter((lem) =>{
+        return lem.id !== id
+      })
+      this.listaLembretesAtualizada.next([...this.lembretes]);
     });
   }  
 }
