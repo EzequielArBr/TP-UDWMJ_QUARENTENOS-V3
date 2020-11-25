@@ -1,5 +1,5 @@
 <mat-card>
-  <form (submit)="onAdicionarLembrete(lembreteForm)" #lembreteForm="ngForm">
+  <form (submit)="onSalvarLembrete(lembreteForm)" #lembreteForm="ngForm">
     <mat-form-field>
       <input
         type="text"
@@ -58,7 +58,7 @@
     </mat-form-field>
 
     <button color="accent" mat-raised-button>
-      Inserir Lembrete
+      Salvar Lembrete
     </button>
   </form>
 </mat-card>

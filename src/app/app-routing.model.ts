@@ -8,7 +8,7 @@ const routes: Routes = [
     {path: '', component: LembreteListaComponent },
     {path: 'criar', component: LembreteInserirComponent},
     {path: 'editar/:idLembrete', component: LembreteInserirComponent}
-    ];
+];
 
 @NgModule ({
     imports: [

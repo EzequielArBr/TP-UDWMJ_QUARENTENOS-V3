@@ -23,8 +23,16 @@ export class LembreteInserirComponent implements OnInit {
       if (paramMap.has("idLembrete")){
         this.modo = "editar";
         this.idLembrete = paramMap.get("idLembrete");
-        this.lembrete = this.LembreteService.getLembrete(this.idLembrete);
-        }
+        this.LembreteService.getLembrete(this.idLembrete).subscribe( dadosLem => {
+          this.lembrete = {
+            id: dadosLem._id,
+            titulo: dadosLem.titulo,
+            dataCadastro: dadosLem.dataCadastro,
+            dataPrevista: dadosLem.dataPrevista,
+            atividade: dadosLem.atividade,
+            };
+        });
+      }
       else{
         this.modo = "criar";
         this.idLembrete = null;
@@ -37,15 +45,27 @@ export class LembreteInserirComponent implements OnInit {
 
   }
 
-  onAdicionarLembrete(form: NgForm) {
-    if (form.invalid) return;
-    this.LembreteService.adicionarLembrete(
+  onSalvarLembrete(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }  
+    if (this.modo === "criar"){
+      this.LembreteService.adicionarLembrete(
       form.value.titulo,
       form.value.dataCadastro,
       form.value.dataPrevista,
       form.value.atividade
-      
     );
+    }
+    else{
+      this.LembreteService.atualizarLembrete(
+      this.idLembrete,
+      form.value.titulo,
+      form.value.dataCadastro,
+      form.value.dataPrevista,
+      form.value.atividade
+      )
+    }
     form.resetForm();
 
   }
